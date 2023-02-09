@@ -19,7 +19,7 @@ class Drawer:
     def draw_input_box(self, input_box) -> None:
         font = pygame.font.Font(None, 25)
         txt_surface = font.render(input_box.text, True, input_box.text_color)
-        width = max(200, txt_surface.get_width() + 10)
+        width = max(input_box.const_size[0], txt_surface.get_width() + 10)
         input_box.size = (width, input_box.size[1])
         input_box.input_rect = pygame.Rect(input_box.position[0], input_box.position[1],
                                            input_box.size[0], input_box.size[1])

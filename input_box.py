@@ -23,6 +23,7 @@ class InputBox:
         self.rounding = rounding
         self.input_rect = pygame.Rect(self.position[0], self.position[1], self.size[0], self.size[1])
         self.active = False
+        self.const_size = self.size
 
     def motion(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -46,5 +47,5 @@ class InputBox:
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:
-                    if event.unicode in "1234567890.,":
+                    if event.unicode in "1234567890.-" and len(self.text) <= 10:
                         self.text += event.unicode
