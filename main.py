@@ -1,4 +1,4 @@
-import pygame
+import pygame.event
 import requests
 
 from settings import *
@@ -28,7 +28,6 @@ def change_map(longitude_input_box: InputBox,
                mapa: Map) -> None:
     response_content = make_request("map", "1.0", longitude_input_box.text + ',' + latitude_input_box.text,
                                     "350,350", scale_input_box.text)
-    print(response_content)
     with open("map.png", 'wb') as map_file:
         map_file.write(response_content)
     mapa.make_map()
@@ -91,7 +90,7 @@ def main() -> None:
                         change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
                 elif event.key == pygame.K_DOWN:
                     if latitude_input_box.text != latitude_input_box.background_text:
-                        if float(latitude_input_box.text) - 1 > -90:
+                        if float(latitude_input_box.text) - 1 > -86:
                             latitude_input_box.text = str(float(latitude_input_box.text) - 1)
                             change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
                 elif event.key == pygame.K_RIGHT:
@@ -101,8 +100,18 @@ def main() -> None:
                         change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
                 elif event.key == pygame.K_UP:
                     if latitude_input_box.text != latitude_input_box.background_text:
-                        if float(latitude_input_box.text) + 1 < 90:
+                        if float(latitude_input_box.text) + 1 < 86:
                             latitude_input_box.text = str(float(latitude_input_box.text) + 1)
+                            change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
+                elif event.key == pygame.K_PAGEUP or event.key == pygame.K_w:
+                    if scale_input_box.text != scale_input_box.background_text:
+                        if float(scale_input_box.text) + 1 <= 17:
+                            scale_input_box.text = str(int(scale_input_box.text) + 1)
+                            change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
+                elif event.key == pygame.K_PAGEDOWN or event.key == pygame.K_s:
+                    if scale_input_box.text != scale_input_box.background_text:
+                        if float(scale_input_box.text) - 1 >= 0:
+                            scale_input_box.text = str(int(scale_input_box.text) - 1)
                             change_map(longitude_input_box, latitude_input_box, scale_input_box, mapa)
 
             scale_input_box.motion(event)
