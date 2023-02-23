@@ -1,5 +1,6 @@
 import pygame.event
 import requests
+import os
 
 from settings import *
 from drawer import Drawer
@@ -114,6 +115,7 @@ def main() -> None:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                os.remove('map.png')
                 exit()
 
             scale_input_box.motion(event)
@@ -126,20 +128,24 @@ def main() -> None:
                 if event.key in [pygame.K_LEFT, pygame.K_DOWN, pygame.K_RIGHT, pygame.K_UP]:
                     if event.key == pygame.K_LEFT:
                         if longitude_input_box.text != longitude_input_box.background_text:
-                            longitude_input_box.text = str(float(longitude_input_box.text) - 1)
+                            longitude_input_box.text = str(round(float(longitude_input_box.text) -
+                                                           360 / 2 ** int(current_params['z']) * 1.25, 6))
                             cycle(longitude_input_box)
                     elif event.key == pygame.K_DOWN:
                         if latitude_input_box.text != latitude_input_box.background_text:
                             if float(latitude_input_box.text) - 1 > -86:
-                                latitude_input_box.text = str(float(latitude_input_box.text) - 1)
+                                latitude_input_box.text = str(round(float(latitude_input_box.text) -
+                                                              180 / 2 ** int(current_params['z']) * 1.5, 6))
                     elif event.key == pygame.K_RIGHT:
                         if longitude_input_box.text != longitude_input_box.background_text:
-                            longitude_input_box.text = str(float(longitude_input_box.text) + 1)
+                            longitude_input_box.text = str(round(float(longitude_input_box.text) +
+                                                           360 / 2 ** int(current_params['z']) * 1.25, 6))
                             cycle(longitude_input_box)
                     elif event.key == pygame.K_UP:
                         if latitude_input_box.text != latitude_input_box.background_text:
                             if float(latitude_input_box.text) + 1 < 86:
-                                latitude_input_box.text = str(float(latitude_input_box.text) + 1)
+                                latitude_input_box.text = str(round(float(latitude_input_box.text) +
+                                                              180 / 2 ** int(current_params['z']) * 1.5, 6))
                     current_params['ll'] = [longitude_input_box.text, latitude_input_box.text]
                     change_map(current_params, mapa)
                 elif event.key in [pygame.K_PAGEUP, pygame.K_w, pygame.K_PAGEDOWN, pygame.K_s]:
