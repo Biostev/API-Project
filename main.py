@@ -29,9 +29,7 @@ def make_request(mode: int, scale: str, ll: str, size: str, z: str):
 
 def change_map(params, mapa: Map) -> None:
     response_content = make_request(**params)
-    with open("map.png", 'wb') as map_file:
-        map_file.write(response_content)
-    mapa.make_map()
+    mapa.make_map(response_content)
 
 
 def cycle(input_box_object: InputBox) -> None:
@@ -105,10 +103,7 @@ def main() -> None:
         latitude_input_box.text = current_params['ll'][1]
 
     response_content = make_request(**current_params)
-    with open("map.png", 'wb') as map_file:
-        map_file.write(response_content)
-
-    mapa = Map(map_sprite, (125, 75))
+    mapa = Map(group=map_sprite, position=(125, 75), init_buffer=response_content)
 
     while 1:
         screen.fill(LIGHT_LIGHT_GREY)

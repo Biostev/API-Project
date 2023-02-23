@@ -1,12 +1,16 @@
+from io import BytesIO
+
+import pygame
+
 from settings import *
 
 
 class Map(pygame.sprite.Sprite):
-    def __init__(self, group, position: tuple) -> None:
+    def __init__(self, group, position: tuple, init_buffer: bytes) -> None:
         super().__init__(group)
-        self.image = pygame.image.load("map.png")
+        self.image = pygame.image.load(BytesIO(init_buffer))
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = position[0], position[1]
+        self.rect.topleft = position
 
-    def make_map(self) -> None:
-        self.image = pygame.image.load("map.png")
+    def make_map(self, buffer: bytes) -> None:
+        self.image = pygame.image.load(BytesIO(buffer))
